@@ -127,13 +127,13 @@ def wf_dlvry_slot_finder_driver(checkout_pg_url):
 
 
 if __name__ == "__main__":
-    exit_session = False
+    EXIT_SESSION = False
 
-    while not exit_session:
+    while not EXIT_SESSION:
         wf_dlvry_slot_finder_driver(Config.wf_checkout_url)
 
-        user_in = input("Exit Session: Y/N\n")
-        if user_in.lower() == "y":
-            exit_session = True
+        USER_IN = input("Exit Session: Y/N\n")
+        if USER_IN.lower() == "y":
+            EXIT_SESSION = True
 
     print("Session finished")
