@@ -111,8 +111,7 @@ def wf_dlvry_slot_finder_driver(checkout_pg_url):
     def soup_refresh():
         time.sleep(4)
         driver.refresh()
-        print("refreshed")
-        print(driver.current_url)
+        print(f"refreshed {driver.current_url}")
         html = driver.page_source
         sobj.soup = bs4.BeautifulSoup(html, features="html.parser")
 
