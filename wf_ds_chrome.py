@@ -36,6 +36,9 @@ class Config:
 
     whitespaces_regex = re.compile("\\s+")
 
+    initial_load_wait = 60
+    refresh_wait = 3
+
 
 class SoupObj:
     """
@@ -55,20 +58,31 @@ class ChromeDriverSession:
 
     @staticmethod
     def get_instance():
-        """ Static access method. """
+        """
+        ChromeDriverSession singleton get instance
+        """
         if ChromeDriverSession.__instance is None:
             ChromeDriverSession()
         return ChromeDriverSession.__instance
 
     def __init__(self):
-        """ Virtually private constructor. """
+        """
+        ChromeDriverSession singleton constructor
+        """
         if ChromeDriverSession.__instance is not None:
             raise Exception("This class is a singleton!")
 
         driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(Config.wf_checkout_url)
-        print(f"sign in and then navigate in the open tab to url={Config.wf_checkout_url}")
+        print(
+            f"""
+        - Sign in
+        - Navigate in the open tab to url={Config.wf_checkout_url}
+        - you have {Config.initial_load_wait} seconds
+        """
+        )
         self.web_driver = driver
+        time.sleep(Config.initial_load_wait)
         ChromeDriverSession.__instance = self
 
 
@@ -129,12 +143,11 @@ def wf_dlvry_slot_finder_driver():
     slot check driver method
     """
     driver = ChromeDriverSession.get_instance().web_driver
-    time.sleep(60)
 
     sobj = SoupObj()
 
     def soup_refresh():
-        time.sleep(4)
+        time.sleep(Config.refresh_wait)
         driver.refresh()
         print(f"refreshed {driver.current_url}")
         html = driver.page_source
