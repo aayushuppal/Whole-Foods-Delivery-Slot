@@ -6,6 +6,7 @@ whole foods delivery slot finder - chrome
 """
 
 import os
+import sys
 import time
 import re
 import bs4
@@ -43,6 +44,32 @@ class SoupObj:
 
     def __init__(self):
         self.soup = None
+
+
+class ChromeDriverSession:
+    """
+    Singleton for Chrome webdriver
+    """
+
+    __instance = None
+
+    @staticmethod
+    def get_instance():
+        """ Static access method. """
+        if ChromeDriverSession.__instance is None:
+            ChromeDriverSession()
+        return ChromeDriverSession.__instance
+
+    def __init__(self):
+        """ Virtually private constructor. """
+        if ChromeDriverSession.__instance is not None:
+            raise Exception("This class is a singleton!")
+
+        driver = webdriver.Chrome(ChromeDriverManager().install())
+        driver.get(Config.wf_checkout_url)
+        print(f"sign in and then navigate in the open tab to url={Config.wf_checkout_url}")
+        self.web_driver = driver
+        ChromeDriverSession.__instance = self
 
 
 def get_normalized_text(txt):
@@ -97,13 +124,11 @@ def are_delivery_slots_available(soup):
 # ==================================================================================================
 
 
-def wf_dlvry_slot_finder_driver(checkout_pg_url):
+def wf_dlvry_slot_finder_driver():
     """
     slot check driver method
     """
-    driver = webdriver.Chrome(ChromeDriverManager().install())
-    driver.get(checkout_pg_url)
-    print(f"sign in and then navigate in the open tab to url={checkout_pg_url}")
+    driver = ChromeDriverSession.get_instance().web_driver
     time.sleep(60)
 
     sobj = SoupObj()
@@ -129,10 +154,12 @@ if __name__ == "__main__":
     EXIT_SESSION = False
 
     while not EXIT_SESSION:
-        wf_dlvry_slot_finder_driver(Config.wf_checkout_url)
+        wf_dlvry_slot_finder_driver()
 
         USER_IN = input("Exit Session: Y/N\n")
         if USER_IN.lower() == "y":
             EXIT_SESSION = True
 
     print("Session finished")
+    ChromeDriverSession.get_instance().web_driver.quit()
+    sys.exit()
