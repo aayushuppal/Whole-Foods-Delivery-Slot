@@ -97,7 +97,7 @@ def get_normalized_text(txt):
 
 def alert_util(msg):
     for i in range(Config.alert_count):
-        PYTTSX_ENGINE.say({msg})
+        PYTTSX_ENGINE.say(msg)
         PYTTSX_ENGINE.runAndWait()
         if i == Config.alert_count - 1:
             break
