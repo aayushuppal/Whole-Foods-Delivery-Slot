@@ -4,8 +4,6 @@ Amid COVID-19 trying to get Whole Foods and Amazon Fresh delivery slots can get 
 
 ## Usage:
 
-- python3.7
-
 ```
 make setup
 
@@ -13,6 +11,9 @@ make check
 
 make run
 ```
+
+- tested on `linux python3.7`
+- might require minor tweaks on other architectures
 
 _The script works after you have added all the items to your cart! Note, have your cart ready before running this script! Also, please don't let your computer sleep. Let your computer do the work, while you sleep_
 
