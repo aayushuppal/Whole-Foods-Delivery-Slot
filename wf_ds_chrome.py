@@ -10,6 +10,7 @@ import sys
 import time
 import re
 import bs4
+import pyttsx3
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -38,6 +39,11 @@ class Config:
 
     initial_load_wait = 60
     refresh_wait = 3
+
+    alert_count = 3
+
+
+PYTTSX_ENGINE = pyttsx3.init()
 
 
 class SoupObj:
@@ -91,7 +97,12 @@ def get_normalized_text(txt):
 
 
 def alert_util(msg):
-    os.system(f'espeak "{msg}"')
+    for i in range(Config.alert_count):
+        PYTTSX_ENGINE.say({msg})
+        PYTTSX_ENGINE.runAndWait()
+        if i == Config.alert_count - 1:
+            break
+        time.sleep(1)
 
 
 # ==================================================================================================

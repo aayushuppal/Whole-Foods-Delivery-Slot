@@ -7,3 +7,6 @@ check:
 
 run:
 	./venv/bin/python3.7 wf_ds_chrome.py
+
+clean:
+	rm -rf __pycache__
