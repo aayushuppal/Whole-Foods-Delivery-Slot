@@ -5,7 +5,6 @@
 whole foods delivery slot finder - chrome
 """
 
-import os
 import sys
 import time
 import re
